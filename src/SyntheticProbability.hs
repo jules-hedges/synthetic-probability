@@ -1,3 +1,9 @@
+{-
+This is a demonstration of doing "synthetic" probabilistic programming using the continuation monad.
+For documentation, see the blog post
+https://julesh.com/2020/08/15/probabilistic-programming-with-continuations/
+-}
+
 module SyntheticProbability where
 
 import           Control.Monad.Cont
@@ -10,10 +16,10 @@ uniformDiscrete xs = let n = fromIntegral (length xs)
                       in cont $ \k -> sum (map k xs) / n
 
 probability :: Prob x -> (x -> Bool) -> Double
-probability a p = runCont a $ \x -> if p x then 1 else 0
+probability integrate p = runCont integrate $ \x -> if p x then 1 else 0
 
 expectation :: Prob Double -> Double
-expectation a = runCont a id
+expectation integrate = runCont integrate id
 
 twoDice :: Prob Int
 twoDice = do roll1 <- uniformDiscrete [1..6]
